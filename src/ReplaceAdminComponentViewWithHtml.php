@@ -37,7 +37,7 @@ class ReplaceAdminComponentViewWithHtml implements ExtenderInterface
     }
 
     /**
-     * Replace an admin component's view method with the HTML from a given file
+     * Replace an admin component's view method with the given HTML as a string
      * @param string $componentName Component name without the path or extension, example `MailPage`
      * @param string $htmlContent HTML content to inject as a string
      * @return ReplaceAdminComponentViewWithHtml
