@@ -8,27 +8,53 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Container\Container;
 
 /**
- * Forces a value for a given setting key.
- * Even if another value is set via the admin panel, the values defined via this extender will take priority.
+ * Allows to hard-code key-value pairs as the output of ::get() and hide values from the output of ::all()
  */
 class OverrideSettings implements ExtenderInterface
 {
-    protected $overrides;
+    private $overrides;
+    private $hidden;
 
-    public function __construct(array $overrides = [])
+    public function __construct(array $overrides = [], array $hidden = [])
     {
         $this->overrides = $overrides;
+        $this->hidden = $hidden;
     }
 
+    /**
+     * Set some key-value pairs to be returned by SettingsRepositoryInterface::get()
+     * Even if another value is set via the admin panel, the values defined via this extender will take priority
+     * @param string $key
+     * @param mixed $value
+     * @return OverrideSettings
+     */
     public function set(string $key, $value)
     {
         $this->overrides[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Hide some keys from the SettingsRepositoryInterface::all() payload
+     * @param string|array $keys
+     * @return OverrideSettings
+     */
+    public function hide($keys)
+    {
+        if (is_array($keys)) {
+            $this->hidden = array_merge($this->hidden, $keys);
+        } else {
+            $this->hidden[] = $keys;
+        }
+
+        return $this;
     }
 
     public function extend(Container $container, Extension $extension = null)
     {
         $container->extend(SettingsRepositoryInterface::class, function ($settings) {
-            return new OverrideSettingsRepository($settings, $this->overrides);
+            return new OverrideSettingsRepository($settings, $this->overrides, $this->hidden);
         });
     }
 }

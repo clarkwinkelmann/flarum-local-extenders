@@ -3,26 +3,30 @@
 namespace ClarkWinkelmann\LocalExtenders;
 
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Support\Arr;
 
 /**
- * Same as Flarum's OverrideSettingsRepository but does not override all() to prevent exposing the value to the admin panel
+ * Proxy to Flarum's original OverrideSettingsRepository but allows overriding values in get() and hiding values in all()
  * Also calls $inner->get($key) instead of Arr::get($inner->all(), $key)
+ * @internal Do not use this class directly. Only the OverrideSettings extender is part of this package's public API
  */
 class OverrideSettingsRepository implements SettingsRepositoryInterface
 {
-    protected $inner;
+    private $inner;
 
-    protected $overrides = [];
+    private $overrides = [];
+    private $hidden = [];
 
-    public function __construct(SettingsRepositoryInterface $inner, array $overrides)
+    public function __construct(SettingsRepositoryInterface $inner, array $overrides, array $hidden)
     {
         $this->inner = $inner;
         $this->overrides = $overrides;
+        $this->hidden = $hidden;
     }
 
     public function all(): array
     {
-        return $this->inner->all();
+        return Arr::except($this->inner->all(), $this->hidden);
     }
 
     public function get($key, $default = null)

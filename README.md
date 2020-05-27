@@ -14,23 +14,115 @@ This is not an actual extension, and will not appear in your Flarum admin panel.
 
 The extenders can be used by adding them in the array of `extend.php` at the root of the Flarum install.
 
-### Hide extension settings
+Below you will find a summary of the features along with examples.
+See the PHPDoc blocks in the source code for the full documentation and warnings.
+
+### Frontend without modules
+
+Similar to Flarum's Frontend extender for js & css, but with a few differences:
+
+- Doesn't handle javascript files as modules, allowing custom code that isn't designed for a module loader
+- Allow adding multiple javascript files with a single extender
 
 Example:
 
-    new ClarkWinkelmann\LocalExtenders\OverrideSettings([
-        'fof-stopforumspam.ip' => '1',
-        'fof-stopforumspam.email' => '0',
-        'fof-stopforumspam.api_key' => 'abcdefg',
-    ]),
+```php
+(new ClarkWinkelmann\LocalExtenders\FrontendWithoutModule('admin'))
+    ->js(__DIR__.'/local/one-file.js')
+    ->js(__DIR__.'/local/one-other-file.js')
+    ->css(__DIR__.'/local/you-can-also-import-css-but-its-identical-to-the-core-extender.less'),
+```
+
+### Hide extension settings
+
+Removes the button that gives access to an extension's settings modal.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\HideExtensionSettings([
+    'fof-stopforumspam',
+]),
+```
+
+### Hide extension version in admin
+
+Removes the extension version of all extensions from the admin panel's data payload.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\HideExtensionVersionInAdmin(),
+```
+
+### Hide Flarum version in admin
+
+Removes the Flarum version from the admin panel's data payload.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\HideExtensionVersionInAdmin(),
+```
+
+### Hide system info in admin
+
+Removes the PHP and MySQL version from the admin panel's data payload.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\HideSystemInfoInAdmin(),
+```
 
 ### Override settings
 
+Set some key-value pairs to be returned by SettingsRepositoryInterface::get().
+Even if another value is set via the admin panel, the values defined via this extender will take priority.
+
 Example:
 
-    new ClarkWinkelmann\LocalExtenders\HideExtensionSettings([
-        'fof-stopforumspam',
-    ]),
+```php
+(new ClarkWinkelmann\LocalExtenders\OverrideSettings())
+    ->set('mail_driver', 'log')
+    ->set('forum_title', 'Hello'),
+```
+
+Hide some keys from the SettingsRepositoryInterface::all() payload.
+This only hides values coming from the database as values overridden via this extender are never returned by ::all() anyway.
+
+Example:
+
+```php
+(new ClarkWinkelmann\LocalExtenders\OverrideSettings())
+    ->hide('mail_driver'),
+```
+
+The overridden values can also be set via an associative array passed to the constructor:
+
+```php
+new ClarkWinkelmann\LocalExtenders\OverrideSettings([
+    'fof-stopforumspam.ip' => '1',
+    'fof-stopforumspam.email' => '0',
+    'fof-stopforumspam.api_key' => 'abcdefg',
+]),
+```
+
+### Replace admin component view with HTML
+
+Replace an admin component's view method with the given HTML.
+
+Example:
+
+```php
+(new ClarkWinkelmann\LocalExtenders\ReplaceAdminComponentViewWithHtml())
+    ->string('MailPage', '<p>We have already configured email for you</p>'),
+```
+
+```php
+(new ClarkWinkelmann\LocalExtenders\ReplaceAdminComponentViewWithHtml())
+    ->file('MailPage', __DIR__.'/local/mail.html'),
+```
 
 ## Links
 
