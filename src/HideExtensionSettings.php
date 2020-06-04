@@ -13,6 +13,7 @@ use Illuminate\Contracts\Container\Container;
  * This does not prevent seeing or editing the settings present in the modal.
  * It will hide the "Settings" button from the 3-dot menu on the Extensions page for the given list of extensions.
  * If the extension provides another way to access the modal or page, the user will still be able to access it.
+ * @deprecated Use option hideSettings in AlterExtensionListInAdmin instead
  */
 class HideExtensionSettings implements ExtenderInterface
 {

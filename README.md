@@ -17,6 +17,43 @@ The extenders can be used by adding them in the array of `extend.php` at the roo
 Below you will find a summary of the features along with examples.
 See the PHPDoc blocks in the source code for the full documentation and warnings.
 
+### Alter extension list in admin
+
+Lets you customize how the extension list is rendered in the admin panel.
+
+"Hide extension" and "Hide version" effectively hide the data, but it can still be guessed when the extension is enabled.
+
+All other options are just cosmetic and just visually change the look without hiding the original values or features.
+
+It's always possible to enable/disable an extension or edit its settings via the API.
+
+Example:
+
+```php
+(new ClarkWinkelmann\LocalExtenders\AlterExtensionListInAdmin())
+    ->extension('flarum-markdown', function ($extension) {
+        // To Hide the extension completely
+        $extension->hide();
+        
+        // To hide select information or buttons
+        $extension->hideVersion();
+        $extension->hideSettings();
+        
+        // To change the look
+        $extension->title = 'New title';
+        $extension->description = 'New description';
+        $extension->iconName = 'fas fa-tree';
+        $extension->iconColor = '#aa0000';
+        $extension->iconBackgroundColor = '#aa0000';
+        $extension->iconImage = __DIR__.'/path/to/image.png'; // SVG/PNG/JPG
+        
+        // You can also chain calls via the methods
+        $extension
+            ->title('New title')
+            ->iconName('fas fa-tree');
+    }),
+```
+
 ### Frontend without modules
 
 Similar to Flarum's Frontend extender for js & css, but with a few differences:
@@ -37,13 +74,7 @@ Example:
 
 Removes the button that gives access to an extension's settings modal.
 
-Example:
-
-```php
-new ClarkWinkelmann\LocalExtenders\HideExtensionSettings([
-    'fof-stopforumspam',
-]),
-```
+Deprecated. Use option `hideSettings` of [Alter extension list in admin](#alter-extension-list-in-admin).
 
 ### Hide extension version in admin
 
