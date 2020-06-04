@@ -11,6 +11,7 @@ use Illuminate\Contracts\Container\Container;
 /**
  * Replace an admin component's view method with the given HTML.
  * The content will be injected using Mithril's m.trust() method.
+ * Translations in the form {app.translator.trans('package.admin.key')} will be replaced at run-time.
  */
 class ReplaceAdminComponentViewWithHtml implements ExtenderInterface
 {
@@ -56,11 +57,12 @@ class ReplaceAdminComponentViewWithHtml implements ExtenderInterface
         $container->resolving('flarum.assets.admin', function (Assets $assets) {
             $assets->js(function (SourceCollector $sources) {
                 $sources->addString(function () {
-                    return "app.initializers.add('local-extenders/replace-component-view', () => {\n" .
+                    return "app.initializers.add('local-extenders/replace-component-view', function () {\n" .
+                        "TRANSLATION_REGEX = /\{app\.translator\.trans\(\'([A-Za-z0-9._-]+)'\)\}/g;\n" .
                         implode("\n", array_map(function (callable $value, string $componentName) {
                             return
                                 "  flarum.core.compat['extend'].override(flarum.core.compat['components/$componentName'].prototype, 'view', function() {" .
-                                "    return m.trust(" . json_encode($value()) . ");" .
+                                "    return m.trust(" . json_encode($value()) . ".replace(TRANSLATION_REGEX, function(match, key) { return app.translator.trans(key) }));" .
                                 "  });";
                         }, $this->components, array_keys($this->components))) .
                         "\n}, -100);\n";
