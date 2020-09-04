@@ -139,6 +139,16 @@ new ClarkWinkelmann\LocalExtenders\OverrideSettings([
 ]),
 ```
 
+### Remember Me by default
+
+Checks the "remember me" checkbox of the LogIn modal when it opens.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\RememberMeByDefault(),
+```
+
 ### Replace admin component view with HTML
 
 Replace an admin component's view method with the given HTML.
