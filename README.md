@@ -54,6 +54,24 @@ Example:
     }),
 ```
 
+### Follow after start
+
+Adds a new user preference that controls a new feature "Follow discussions that I start".
+
+Works exactly like the "Follow discussions that I reply to" feature bundled with Subscriptions, but for the discussion start.
+
+Example:
+
+```php
+new ClarkWinkelmann\LocalExtenders\FollowAfterStart(),
+```
+
+It's enabled by default. To set it disabled by default, pass a parameter to the constructor:
+
+```php
+new ClarkWinkelmann\LocalExtenders\FollowAfterStart(false),
+```
+
 ### Frontend without modules
 
 Similar to Flarum's Frontend extender for js & css, but with a few differences:
