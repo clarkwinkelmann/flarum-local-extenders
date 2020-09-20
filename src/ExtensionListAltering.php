@@ -4,7 +4,7 @@ namespace ClarkWinkelmann\LocalExtenders;
 
 /**
  * Defines a modification to an extension's look in the admin.
- * Do not create this object yourself. It's passed as the argument to the callback of AlterExtensionListInAdmin::extension().
+ * @internal Do not create this object yourself. It's passed as the argument to the callback of AlterExtensionListInAdmin::extension()
  */
 class ExtensionListAltering
 {
