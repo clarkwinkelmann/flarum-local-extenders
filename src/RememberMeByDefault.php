@@ -21,8 +21,8 @@ class RememberMeByDefault implements ExtenderInterface
             $assets->js(function (SourceCollector $sources) {
                 $sources->addString(function () {
                     return "app.initializers.add('local-extenders/remember-me', () => {\n" .
-                        "  flarum.core.compat['extend'].extend(flarum.core.compat['components/LogInModal'].prototype, 'init', function () {\n" .
-                        "    this.remember = m.prop(true);\n" .
+                        "  flarum.core.compat['extend'].extend(flarum.core.compat['components/LogInModal'].prototype, 'oninit', function () {\n" .
+                        "    this.remember(true);\n" .
                         "  });\n" .
                         "});\n";
                 });

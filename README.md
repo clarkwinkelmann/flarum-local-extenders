@@ -88,12 +88,6 @@ Example:
     ->css(__DIR__.'/local/you-can-also-import-css-but-its-identical-to-the-core-extender.less'),
 ```
 
-### Hide extension settings
-
-Removes the button that gives access to an extension's settings modal.
-
-Deprecated. Use option `hideSettings` of [Alter extension list in admin](#alter-extension-list-in-admin).
-
 ### Hide extension version in admin
 
 Removes the extension version of all extensions from the admin panel's data payload.

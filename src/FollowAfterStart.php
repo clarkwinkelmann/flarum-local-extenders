@@ -38,7 +38,14 @@ class FollowAfterStart implements ExtenderInterface
                 $sources->addString(function () {
                     return "app.initializers.add('local-extenders/follow-after-start', function () {" .
                         "  flarum.core.compat.extend.extend(flarum.core.compat['components/SettingsPage'].prototype, 'notificationsItems', function (items) {" .
-                        "    items.add('followAfterStart', flarum.core.compat['components/Switch'].component({state: this.user.preferences().followAfterStart, onchange: this.preferenceSaver('followAfterStart')}, app.translator.trans('local-extenders.forum.followAfterStart')));" .
+                        "    items.add('followAfterStart', flarum.core.compat['components/Switch'].component({" .
+                        "state: this.user.preferences().followAfterStart, " .
+                        "onchange: value => {" .
+                        "this.followAfterStartLoading = true;" .
+                        "this.user.savePreferences({followAfterStart: value}).then(() => {" .
+                        "this.followAfterStartLoading = false;m.redraw();});}," .
+                        "loading: this.followAfterStartLoading" .
+                        "}, app.translator.trans('local-extenders.forum.followAfterStart')));" .
                         "  });" .
                         "}, -100);";
                 });
