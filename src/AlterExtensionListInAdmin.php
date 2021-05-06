@@ -113,7 +113,7 @@ class AlterExtensionListInAdmin implements ExtenderInterface
                         return "app.initializers.add('local-extenders/alter-extension-list-hide-settings', function () {\n" .
                             implode("\n", array_map(function ($extensionId) {
                                 $safeExtensionId = json_encode($extensionId);
-                                return "  delete app.extensionSettings[$safeExtensionId];\n" .
+                                return "  if (app.extensionSettings) delete app.extensionSettings[$safeExtensionId];\n" . // Only up to beta 15
                                     "  app.extensionData.for($safeExtensionId);\n" . // Just to create the key in case it's not there already
                                     "  delete app.extensionData.data[$safeExtensionId].settings"; // Cannot just have an empty list, the key must be removed so the save button doesn't appear
                             }, $hideSettingsForExtensionIds)) .

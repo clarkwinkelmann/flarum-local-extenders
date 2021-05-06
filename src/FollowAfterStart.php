@@ -3,12 +3,12 @@
 namespace ClarkWinkelmann\LocalExtenders;
 
 use Flarum\Discussion\Event\Started;
-use Flarum\Event\ConfigureUserPreferences;
 use Flarum\Extend\ExtenderInterface;
 use Flarum\Extension\Extension;
 use Flarum\Frontend\Assets;
 use Flarum\Frontend\Compiler\Source\SourceCollector;
 use Flarum\Locale\LocaleManager;
+use Flarum\User\User;
 use Illuminate\Contracts\Container\Container;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
@@ -29,9 +29,8 @@ class FollowAfterStart implements ExtenderInterface
     {
         $container['events']->listen(Started::class, [$this, 'started']);
 
-        $container['events']->listen(ConfigureUserPreferences::class, function (ConfigureUserPreferences $event) {
-            $event->add('followAfterStart', 'boolval', $this->defaultPreferenceValue);
-        });
+        // We don't call the User extender since it just calls this code behind the scenes
+        User::registerPreference('followAfterStart', 'boolval', $this->defaultPreferenceValue);
 
         $container->resolving('flarum.assets.forum', function (Assets $assets) {
             $assets->js(function (SourceCollector $sources) {

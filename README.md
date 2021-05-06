@@ -105,7 +105,7 @@ Removes the Flarum version from the admin panel's data payload.
 Example:
 
 ```php
-new ClarkWinkelmann\LocalExtenders\HideExtensionVersionInAdmin(),
+new ClarkWinkelmann\LocalExtenders\HideFlarumVersionInAdmin(),
 ```
 
 ### Hide system info in admin

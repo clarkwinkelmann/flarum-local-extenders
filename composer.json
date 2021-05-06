@@ -6,13 +6,14 @@
     ],
     "license": "MIT",
     "require": {
-        "flarum/core": ">=0.1.0-beta.15 <0.1.0-beta.16",
+        "flarum/core": "^0.1.0-beta.15",
         "ext-json": "*"
     },
     "authors": [
         {
             "name": "Clark Winkelmann",
             "email": "clark.winkelmann@gmail.com",
+            "homepage": "https://clarkwinkelmann.com/",
             "role": "Developer"
         }
     ],

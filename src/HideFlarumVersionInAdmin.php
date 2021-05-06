@@ -2,8 +2,8 @@
 
 namespace ClarkWinkelmann\LocalExtenders;
 
-use Flarum\Api\Event\Serializing;
 use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Extend\ApiSerializer;
 use Flarum\Extend\ExtenderInterface;
 use Flarum\Extension\Extension;
 use Flarum\Settings\Event\Deserializing;
@@ -22,10 +22,18 @@ class HideFlarumVersionInAdmin implements ExtenderInterface
             unset($event->settings['version']);
         });
 
-        $container['events']->listen(Serializing::class, function (Serializing $event) {
-            if ($event->isSerializer(ForumSerializer::class) && $event->actor->can('administrate')) {
-                $event->attributes['version'] = null;
-            }
-        });
+        (new ApiSerializer(ForumSerializer::class))
+            ->attributes(function (ForumSerializer $serializer) {
+                // If the user isn't admin, they can't see the version already
+                if (!$serializer->getActor()->can('administrate')) {
+                    return [];
+                }
+
+                // Override the original value
+                return [
+                    'version' => null,
+                ];
+            })
+            ->extend($container, $extension);
     }
 }
