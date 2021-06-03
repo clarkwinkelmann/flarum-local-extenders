@@ -26,9 +26,9 @@ class ReplaceAdminComponentViewWithHtml implements ExtenderInterface
      * Replace an admin component's view method with the HTML from a given file
      * @param string $componentName Component name without the path or extension, example `MailPage`
      * @param string $fileName Absolute path to the file to read the HTML content from
-     * @return ReplaceAdminComponentViewWithHtml
+     * @return self
      */
-    public function file(string $componentName, string $fileName)
+    public function file(string $componentName, string $fileName): self
     {
         $this->components[$componentName] = function () use ($fileName) {
             return file_get_contents($fileName);
@@ -41,9 +41,9 @@ class ReplaceAdminComponentViewWithHtml implements ExtenderInterface
      * Replace an admin component's view method with the given HTML as a string
      * @param string $componentName Component name without the path or extension, example `MailPage`
      * @param string $htmlContent HTML content to inject as a string
-     * @return ReplaceAdminComponentViewWithHtml
+     * @return self
      */
-    public function string(string $componentName, string $htmlContent)
+    public function string(string $componentName, string $htmlContent): self
     {
         $this->components[$componentName] = function () use ($htmlContent) {
             return $htmlContent;

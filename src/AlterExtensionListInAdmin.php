@@ -23,7 +23,7 @@ class AlterExtensionListInAdmin implements ExtenderInterface
 {
     private $extensions = [];
 
-    public function extension(string $extensionId, callable $callback)
+    public function extension(string $extensionId, callable $callback): self
     {
         $altering = Arr::get($this->extensions, $extensionId) ?? new ExtensionListAltering();
 
@@ -109,12 +109,11 @@ class AlterExtensionListInAdmin implements ExtenderInterface
         if (count($hideSettingsForExtensionIds)) {
             $container->resolving('flarum.assets.admin', function (Assets $assets) use ($hideSettingsForExtensionIds) {
                 $assets->js(function (SourceCollector $sources) use ($hideSettingsForExtensionIds) {
-                    $sources->addString(function () use ($hideSettingsForExtensionIds) {
+                    $sources->addString(function () use ($hideSettingsForExtensionIds): string {
                         return "app.initializers.add('local-extenders/alter-extension-list-hide-settings', function () {\n" .
                             implode("\n", array_map(function ($extensionId) {
                                 $safeExtensionId = json_encode($extensionId);
-                                return "  if (app.extensionSettings) delete app.extensionSettings[$safeExtensionId];\n" . // Only up to beta 15
-                                    "  app.extensionData.for($safeExtensionId);\n" . // Just to create the key in case it's not there already
+                                return "  app.extensionData.for($safeExtensionId);\n" . // Just to create the key in case it's not there already
                                     "  delete app.extensionData.data[$safeExtensionId].settings"; // Cannot just have an empty list, the key must be removed so the save button doesn't appear
                             }, $hideSettingsForExtensionIds)) .
                             "\n}, -100);\n";

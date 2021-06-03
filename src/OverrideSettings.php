@@ -26,9 +26,9 @@ class OverrideSettings implements ExtenderInterface
      * Even if another value is set via the admin panel, the values defined via this extender will take priority
      * @param string $key
      * @param mixed $value
-     * @return OverrideSettings
+     * @return self
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): self
     {
         $this->overrides[$key] = $value;
 

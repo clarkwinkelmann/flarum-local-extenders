@@ -25,14 +25,14 @@ class FrontendWithoutModule implements ExtenderInterface
         $this->frontend = $frontend;
     }
 
-    public function css(string $path)
+    public function css(string $path): self
     {
         $this->css[] = $path;
 
         return $this;
     }
 
-    public function js(string $path)
+    public function js(string $path): self
     {
         $this->js[] = $path;
 

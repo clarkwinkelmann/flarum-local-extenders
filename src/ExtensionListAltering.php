@@ -18,63 +18,63 @@ class ExtensionListAltering
     public $iconBackgroundColor;
     public $iconImage;
 
-    public function hide()
+    public function hide(): self
     {
         $this->hide = true;
 
         return $this;
     }
 
-    public function hideVersion()
+    public function hideVersion(): self
     {
         $this->hideVersion = true;
 
         return $this;
     }
 
-    public function hideSettings()
+    public function hideSettings(): self
     {
         $this->hideSettings = true;
 
         return $this;
     }
 
-    public function title(string $title)
+    public function title(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function description(string $description)
+    public function description(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function iconName(string $name)
+    public function iconName(string $name): self
     {
         $this->iconName = $name;
 
         return $this;
     }
 
-    public function iconColor(string $color)
+    public function iconColor(string $color): self
     {
         $this->iconColor = $color;
 
         return $this;
     }
 
-    public function iconBackgroundColor(string $color)
+    public function iconBackgroundColor(string $color): self
     {
         $this->iconBackgroundColor = $color;
 
         return $this;
     }
 
-    public function iconImage(string $path)
+    public function iconImage(string $path): self
     {
         $this->iconImage = $path;
 

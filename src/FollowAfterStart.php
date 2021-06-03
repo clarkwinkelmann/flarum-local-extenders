@@ -34,7 +34,7 @@ class FollowAfterStart implements ExtenderInterface
 
         $container->resolving('flarum.assets.forum', function (Assets $assets) {
             $assets->js(function (SourceCollector $sources) {
-                $sources->addString(function () {
+                $sources->addString(function (): string {
                     return "app.initializers.add('local-extenders/follow-after-start', function () {" .
                         "  flarum.core.compat.extend.extend(flarum.core.compat['components/SettingsPage'].prototype, 'notificationsItems', function (items) {" .
                         "    items.add('followAfterStart', flarum.core.compat['components/Switch'].component({" .
