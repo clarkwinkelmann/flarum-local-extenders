@@ -114,7 +114,7 @@ class AlterExtensionListInAdmin implements ExtenderInterface
                             implode("\n", array_map(function ($extensionId) {
                                 $safeExtensionId = json_encode($extensionId);
                                 return "  app.extensionData.for($safeExtensionId);\n" . // Just to create the key in case it's not there already
-                                    "  delete app.extensionData.data[$safeExtensionId].settings"; // Cannot just have an empty list, the key must be removed so the save button doesn't appear
+                                    "  delete app.extensionData.state.data[$safeExtensionId].settings"; // Cannot just have an empty list, the key must be removed so the save button doesn't appear
                             }, $hideSettingsForExtensionIds)) .
                             "\n}, -100);\n";
                     });
